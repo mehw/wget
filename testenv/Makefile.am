@@ -27,10 +27,11 @@
 
 
 if METALINK_IS_ENABLED
-  METALINK_TESTS = Test-metalink-xml.py \
-    Test-metalink-http.py               \
-    Test-metalink-xml-relpath.py        \
-    Test-metalink-xml-abspath.py
+  METALINK_TESTS = Test-metalink-http.py            \
+    Test-metalink-xml.py                            \
+    Test-metalink-xml-relpath.py                    \
+    Test-metalink-xml-abspath.py                    \
+    Test-metalink-xml-homepath.py
 else
   METALINK_TESTS =
 endif
