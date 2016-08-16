@@ -26,7 +26,47 @@ MetaXml = \
   <version>1.2.3</version>
   <description>Wget Test File 1 description</description>
   <files>
+    <file name="File1/">
+      <verification>
+        <hash type="sha256">{{FILE1_HASH}}</hash>
+      </verification>
+      <resources>
+        <url type="http" preference="30">http://{{SRV_HOST}}:{{SRV_PORT}}/File1</url>
+      </resources>
+    </file>
+    <file name="./File1">
+      <verification>
+        <hash type="sha256">{{FILE1_HASH}}</hash>
+      </verification>
+      <resources>
+        <url type="http" preference="30">http://{{SRV_HOST}}:{{SRV_PORT}}/File1</url>
+      </resources>
+    </file>
     <file name="../File1">
+      <verification>
+        <hash type="sha256">{{FILE1_HASH}}</hash>
+      </verification>
+      <resources>
+        <url type="http" preference="30">http://{{SRV_HOST}}:{{SRV_PORT}}/File1</url>
+      </resources>
+    </file>
+    <file name="dir/./File1">
+      <verification>
+        <hash type="sha256">{{FILE1_HASH}}</hash>
+      </verification>
+      <resources>
+        <url type="http" preference="30">http://{{SRV_HOST}}:{{SRV_PORT}}/File1</url>
+      </resources>
+    </file>
+    <file name="dir/../File1">
+      <verification>
+        <hash type="sha256">{{FILE1_HASH}}</hash>
+      </verification>
+      <resources>
+        <url type="http" preference="30">http://{{SRV_HOST}}:{{SRV_PORT}}/File1</url>
+      </resources>
+    </file>
+    <file name="dir/subdir/File1">
       <verification>
         <hash type="sha256">{{FILE1_HASH}}</hash>
       </verification>
@@ -51,7 +91,7 @@ Files = [[A_File, B_File]]
 Existing_Files = [MetaFile]
 
 ExpectedReturnCode = 0
-ExpectedDownloadedFiles = [A_File, MetaFile]
+ExpectedDownloadedFiles = [WgetFile ("dir/subdir/File1", File1), MetaFile]
 
 ################ Pre and Post Test Hooks #####################################
 pre_test = {

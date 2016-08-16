@@ -26,7 +26,7 @@ MetaXml = \
   <version>1.2.3</version>
   <description>Wget Test File 1 description</description>
   <files>
-    <file name="/File1">
+    <file name="~/File1">
       <verification>
         <hash type="sha256">{{FILE1_HASH}}</hash>
       </verification>
