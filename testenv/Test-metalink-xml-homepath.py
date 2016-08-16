@@ -2,6 +2,7 @@
 from sys import exit
 from test.http_test import HTTPTest
 from misc.wget_file import WgetFile
+import re
 import hashlib
 
 """
@@ -25,47 +26,7 @@ MetaXml = \
   <version>1.2.3</version>
   <description>Wget Test File 1 description</description>
   <files>
-    <file name="File1/">
-      <verification>
-        <hash type="sha256">{{FILE1_HASH}}</hash>
-      </verification>
-      <resources>
-        <url type="http" preference="30">http://{{SRV_HOST}}:{{SRV_PORT}}/File1</url>
-      </resources>
-    </file>
-    <file name="./File1">
-      <verification>
-        <hash type="sha256">{{FILE1_HASH}}</hash>
-      </verification>
-      <resources>
-        <url type="http" preference="30">http://{{SRV_HOST}}:{{SRV_PORT}}/File1</url>
-      </resources>
-    </file>
-    <file name="../File1">
-      <verification>
-        <hash type="sha256">{{FILE1_HASH}}</hash>
-      </verification>
-      <resources>
-        <url type="http" preference="30">http://{{SRV_HOST}}:{{SRV_PORT}}/File1</url>
-      </resources>
-    </file>
-    <file name="dir/./File1">
-      <verification>
-        <hash type="sha256">{{FILE1_HASH}}</hash>
-      </verification>
-      <resources>
-        <url type="http" preference="30">http://{{SRV_HOST}}:{{SRV_PORT}}/File1</url>
-      </resources>
-    </file>
-    <file name="dir/../File1">
-      <verification>
-        <hash type="sha256">{{FILE1_HASH}}</hash>
-      </verification>
-      <resources>
-        <url type="http" preference="30">http://{{SRV_HOST}}:{{SRV_PORT}}/File1</url>
-      </resources>
-    </file>
-    <file name="dir/subdir/File1">
+    <file name="~/File1">
       <verification>
         <hash type="sha256">{{FILE1_HASH}}</hash>
       </verification>
@@ -81,16 +42,16 @@ MetaXml = \
 
 A_File = WgetFile ("File1", File1)
 B_File = WgetFile ("File1_lowPref", File1_lowPref)
-MetaFile = WgetFile ("test.metalink", MetaXml)
+MetaFile = WgetFile ("test.meta4", MetaXml)
 
-WGET_OPTIONS = "--input-metalink test.metalink"
+WGET_OPTIONS = "--input-metalink test.meta4"
 WGET_URLS = [[]]
 
 Files = [[A_File, B_File]]
 Existing_Files = [MetaFile]
 
 ExpectedReturnCode = 0
-ExpectedDownloadedFiles = [WgetFile ("dir/subdir/File1", File1), MetaFile]
+ExpectedDownloadedFiles = [MetaFile]
 
 ################ Pre and Post Test Hooks #####################################
 pre_test = {
@@ -116,9 +77,9 @@ http_test.server_setup()
 ### Get and use dynamic server sockname
 srv_host, srv_port = http_test.servers[0].server_inst.socket.getsockname ()
 
-MetaXml = MetaXml.replace('{{FILE1_HASH}}', File1_sha256)
-MetaXml = MetaXml.replace('{{SRV_HOST}}', srv_host)
-MetaXml = MetaXml.replace('{{SRV_PORT}}', str (srv_port))
+MetaXml = re.sub (r'{{FILE1_HASH}}', File1_sha256, MetaXml)
+MetaXml = re.sub (r'{{SRV_HOST}}', srv_host, MetaXml)
+MetaXml = re.sub (r'{{SRV_PORT}}', str (srv_port), MetaXml)
 MetaFile.content = MetaXml
 
 err = http_test.begin ()
