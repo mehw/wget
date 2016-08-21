@@ -128,16 +128,16 @@ File3_orig = WgetFile ("File3", File3)
 File3_nono = WgetFile ("File3_lowPref", File3_lowPref)
 
 File4_orig = WgetFile ("File4", File4)
-File4_down = WgetFile ("test.meta4.#1", File4)
+File4_down = WgetFile ("dir/File4~", File4)
 File4_nono = WgetFile ("File4_lowPref", File4_lowPref)
 
 File5_orig = WgetFile ("File5", File5)
-File5_down = WgetFile ("test.meta4.#2", File5)
+File5_down = WgetFile ("dir/~/File5", File5)
 File5_nono = WgetFile ("File5_lowPref", File5_lowPref)
 
 MetaFile = WgetFile ("test.meta4", MetaXml)
 
-WGET_OPTIONS = "--input-metalink test.meta4"
+WGET_OPTIONS = "--trust-server-names --input-metalink test.meta4"
 WGET_URLS = [[]]
 
 Files = [[
