@@ -6,7 +6,8 @@ import re
 import hashlib
 
 """
-    This is to test Metalink/XML file support in Wget.
+    This is to test if Metalink/XML forbids the home path and names
+    beginning with the ~ (tilde) character.
 
     With --trust-server-names, trust the metalink:file names.
 
@@ -53,7 +54,7 @@ MetaXml = \
   <version>1.2.3</version>
   <description>Wget Test Files description</description>
   <files>
-    <file name="File1">
+    <file name="~File1"> <!-- rejected by libmetalink -->
       <verification>
         <hash type="sha256">{{FILE1_HASH}}</hash>
       </verification>
@@ -64,7 +65,7 @@ MetaXml = \
         <url type="http" preference="30">http://{{SRV_HOST}}:{{SRV_PORT}}/File1</url>
       </resources>
     </file>
-    <file name="File2">
+    <file name="~/File2"> <!-- rejected by libmetalink -->
       <verification>
         <hash type="sha256">{{FILE2_HASH}}</hash>
       </verification>
@@ -75,7 +76,7 @@ MetaXml = \
         <url type="http" preference="30">http://{{SRV_HOST}}:{{SRV_PORT}}/File2</url>
       </resources>
     </file>
-    <file name="File3">
+    <file name="dir/~File3"> <!-- rejected by libmetalink -->
       <verification>
         <hash type="sha256">{{FILE3_HASH}}</hash>
       </verification>
@@ -86,7 +87,7 @@ MetaXml = \
         <url type="http" preference="30">http://{{SRV_HOST}}:{{SRV_PORT}}/File3</url>
       </resources>
     </file>
-    <file name="File4">
+    <file name="dir/File4~">
       <verification>
         <hash type="sha256">{{FILE4_HASH}}</hash>
       </verification>
@@ -97,7 +98,7 @@ MetaXml = \
         <url type="http" preference="30">http://{{SRV_HOST}}:{{SRV_PORT}}/File4</url>
       </resources>
     </file>
-    <file name="File5">
+    <file name="dir/~/File5">
       <verification>
         <hash type="sha256">{{FILE5_HASH}}</hash>
       </verification>
@@ -114,29 +115,29 @@ MetaXml = \
 
 wrong_file = WgetFile ("wrong_file", bad)
 
+# rejected by libmetalink
 File1_orig = WgetFile ("File1", File1)
-File1_down = WgetFile ("test.#1", File1)
 File1_nono = WgetFile ("File1_lowPref", File1_lowPref)
 
+# rejected by libmetalink
 File2_orig = WgetFile ("File2", File2)
-File2_down = WgetFile ("test.#2", File2)
 File2_nono = WgetFile ("File2_lowPref", File2_lowPref)
 
+# rejected by libmetalink
 File3_orig = WgetFile ("File3", File3)
-File3_down = WgetFile ("test.#3", File3)
 File3_nono = WgetFile ("File3_lowPref", File3_lowPref)
 
 File4_orig = WgetFile ("File4", File4)
-File4_down = WgetFile ("test.#4", File4)
+File4_down = WgetFile ("dir/File4~", File4)
 File4_nono = WgetFile ("File4_lowPref", File4_lowPref)
 
 File5_orig = WgetFile ("File5", File5)
-File5_down = WgetFile ("test.#5", File5)
+File5_down = WgetFile ("dir/~/File5", File5)
 File5_nono = WgetFile ("File5_lowPref", File5_lowPref)
 
 MetaFile = WgetFile ("test.meta4", MetaXml)
 
-WGET_OPTIONS = "--input-metalink test.meta4"
+WGET_OPTIONS = "--trust-server-names --input-metalink test.meta4"
 WGET_URLS = [[]]
 
 Files = [[
@@ -151,9 +152,6 @@ Existing_Files = [MetaFile]
 
 ExpectedReturnCode = 0
 ExpectedDownloadedFiles = [
-    File1_down,
-    File2_down,
-    File3_down,
     File4_down,
     File5_down,
     MetaFile
