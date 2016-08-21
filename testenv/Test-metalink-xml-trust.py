@@ -2,6 +2,7 @@
 from sys import exit
 from test.http_test import HTTPTest
 from misc.wget_file import WgetFile
+import re
 import hashlib
 
 """
@@ -114,28 +115,28 @@ MetaXml = \
 wrong_file = WgetFile ("wrong_file", bad)
 
 File1_orig = WgetFile ("File1", File1)
-File1_down = WgetFile ("test.metalink.#1", File1)
+File1_down = WgetFile ("File1", File1)
 File1_nono = WgetFile ("File1_lowPref", File1_lowPref)
 
 File2_orig = WgetFile ("File2", File2)
-File2_down = WgetFile ("test.metalink.#2", File2)
+File2_down = WgetFile ("File2", File2)
 File2_nono = WgetFile ("File2_lowPref", File2_lowPref)
 
 File3_orig = WgetFile ("File3", File3)
-File3_down = WgetFile ("test.metalink.#3", File3)
+File3_down = WgetFile ("File3", File3)
 File3_nono = WgetFile ("File3_lowPref", File3_lowPref)
 
 File4_orig = WgetFile ("File4", File4)
-File4_down = WgetFile ("test.metalink.#4", File4)
+File4_down = WgetFile ("File4", File4)
 File4_nono = WgetFile ("File4_lowPref", File4_lowPref)
 
 File5_orig = WgetFile ("File5", File5)
-File5_down = WgetFile ("test.metalink.#5", File5)
+File5_down = WgetFile ("File5", File5)
 File5_nono = WgetFile ("File5_lowPref", File5_lowPref)
 
-MetaFile = WgetFile ("test.metalink", MetaXml)
+MetaFile = WgetFile ("test.meta4", MetaXml)
 
-WGET_OPTIONS = "--input-metalink test.metalink"
+WGET_OPTIONS = "--trust-server-names --input-metalink test.meta4"
 WGET_URLS = [[]]
 
 Files = [[
@@ -182,13 +183,13 @@ http_test.server_setup()
 ### Get and use dynamic server sockname
 srv_host, srv_port = http_test.servers[0].server_inst.socket.getsockname ()
 
-MetaXml = MetaXml.replace('{{FILE1_HASH}}', File1_sha256)
-MetaXml = MetaXml.replace('{{FILE2_HASH}}', File2_sha256)
-MetaXml = MetaXml.replace('{{FILE3_HASH}}', File3_sha256)
-MetaXml = MetaXml.replace('{{FILE4_HASH}}', File4_sha256)
-MetaXml = MetaXml.replace('{{FILE5_HASH}}', File5_sha256)
-MetaXml = MetaXml.replace('{{SRV_HOST}}', srv_host)
-MetaXml = MetaXml.replace('{{SRV_PORT}}', str (srv_port))
+MetaXml = re.sub (r'{{FILE1_HASH}}', File1_sha256, MetaXml)
+MetaXml = re.sub (r'{{FILE2_HASH}}', File2_sha256, MetaXml)
+MetaXml = re.sub (r'{{FILE3_HASH}}', File3_sha256, MetaXml)
+MetaXml = re.sub (r'{{FILE4_HASH}}', File4_sha256, MetaXml)
+MetaXml = re.sub (r'{{FILE5_HASH}}', File5_sha256, MetaXml)
+MetaXml = re.sub (r'{{SRV_HOST}}', srv_host, MetaXml)
+MetaXml = re.sub (r'{{SRV_PORT}}', str (srv_port), MetaXml)
 MetaFile.content = MetaXml
 
 err = http_test.begin ()
