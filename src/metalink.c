@@ -197,6 +197,8 @@ retrieve_from_metalink (const metalink_t* metalink)
           struct url *url;
           int url_err;
 
+          clean_metalink_string (&mres->url);
+
           if (!RES_TYPE_SUPPORTED (mres->type))
             {
               logprintf (LOG_VERBOSE,
@@ -786,6 +788,50 @@ append_suffix_number (char **str, const char *sep, wgint num)
 
   number_to_string (buf, num);
   new = concat_strings (*str, sep, buf, '\0');
+  xfree (*str);
+  *str = new;
+}
+
+/*
+  Remove the string's trailing/leading whitespaces and line breaks.
+
+  The string is permanently modified.
+*/
+void
+clean_metalink_string (char **str)
+{
+  int c;
+  size_t len;
+  char *new, *beg, *end;
+
+  if (!str || !*str)
+    return;
+
+  beg = *str;
+
+  while ((c = *beg) && (c == '\n' || c == '\r' || c == '\t' || c == ' '))
+    beg++;
+
+  end = beg;
+
+  /* To not truncate a string containing spaces, search the first '\r'
+     or '\n' which ipotetically marks the end of the string.  */
+  while ((c = *end) && (c != '\r') && (c != '\n'))
+    end++;
+
+  /* If we are at the end of the string, search the first legit
+     character going backward.  */
+  if (*end == '\0')
+    while ((c = *(end - 1)) && (c == '\n' || c == '\r' || c == '\t' || c == ' '))
+      end--;
+
+  len = end - beg;
+
+  if (!(new = malloc (len + 1)))
+    return;
+
+  strncpy (new, beg, len);
+  new[len] = '\0';
   xfree (*str);
   *str = new;
 }

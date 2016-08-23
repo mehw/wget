@@ -52,6 +52,7 @@ int metalink_check_safe_path(const char *path);
 char *get_metalink_basename (char *name);
 void strip_suffix_component (char *name);
 void append_suffix_number (char **str, const char *sep, wgint num);
+void clean_metalink_string (char **str);
 void badhash_suffix (char *name);
 void badhash_or_remove (char *name);
 
