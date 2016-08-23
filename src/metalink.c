@@ -40,6 +40,7 @@ as that of the covered work.  */
 #include "sha1.h"
 #include "sha256.h"
 #include "sha512.h"
+#include "xmemdup0.h"
 #include "xstrndup.h"
 #include "c-strcase.h"
 #include <errno.h>
@@ -195,6 +196,8 @@ retrieve_from_metalink (const metalink_t* metalink)
           struct iri *iri;
           struct url *url;
           int url_err;
+
+          clean_metalink_string (&mres->url);
 
           if (!RES_TYPE_SUPPORTED (mres->type))
             {
@@ -772,6 +775,46 @@ append_suffix_number (char **str, const char *sep, wgint num)
 
   number_to_string (buf, num);
   new = aprintf("%s%s%s", *str ? *str : "", sep ? sep : "", buf);
+  xfree (*str);
+  *str = new;
+}
+
+/*
+  Remove the string's trailing/leading whitespaces and line breaks.
+
+  The string is permanently modified.
+*/
+void
+clean_metalink_string (char **str)
+{
+  int c;
+  size_t len;
+  char *new, *beg, *end;
+
+  if (!str || !*str)
+    return;
+
+  beg = *str;
+
+  while ((c = *beg) && (c == '\n' || c == '\r' || c == '\t' || c == ' '))
+    beg++;
+
+  end = beg;
+
+  /* To not truncate a string containing spaces, search the first '\r'
+     or '\n' which ipotetically marks the end of the string.  */
+  while ((c = *end) && (c != '\r') && (c != '\n'))
+    end++;
+
+  /* If we are at the end of the string, search the first legit
+     character going backward.  */
+  if (*end == '\0')
+    while ((c = *(end - 1)) && (c == '\n' || c == '\r' || c == '\t' || c == ' '))
+      end--;
+
+  len = end - beg;
+
+  new = xmemdup0 (beg, len);
   xfree (*str);
   *str = new;
 }
