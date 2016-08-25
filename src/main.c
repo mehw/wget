@@ -2136,10 +2136,11 @@ only if outputting to a regular file.\n"));
                   for (mres_ptr = mfile->resources; *mres_ptr; mres_ptr++)
                     mres_count++;
 
-                  stable_sort (mfile->resources,
-                               mres_count,
-                               sizeof (metalink_resource_t *),
-                               metalink_res_cmp);
+                  if (mres_count > 1)
+                    stable_sort (mfile->resources,
+                                 mres_count,
+                                 sizeof (metalink_resource_t *),
+                                 metalink_res_cmp);
                 }
             }
           retr_err = retrieve_from_metalink (metalink);
