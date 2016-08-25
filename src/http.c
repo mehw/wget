@@ -2933,8 +2933,10 @@ metalink_from_http (const struct response *resp, const struct http_stat *hs,
 
   /* Metalink data is OK. Now we just need to sort the resources based
      on their priorities, preference, and perhaps location.  */
-  stable_sort (mfile->resources, res_count, sizeof (metalink_resource_t *), metalink_res_cmp);
-  stable_sort (mfile->metaurls, meta_count, sizeof (metalink_metaurl_t *), metalink_meta_cmp);
+  if (res_count > 1)
+    stable_sort (mfile->resources, res_count, sizeof (metalink_resource_t *), metalink_res_cmp);
+  if (meta_count > 1)
+    stable_sort (mfile->metaurls, meta_count, sizeof (metalink_metaurl_t *), metalink_meta_cmp);
 
   /* Restore sensible preference values (in case someone cares to look).  */
   for (i = 0; i < res_count; ++i)
