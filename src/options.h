@@ -68,6 +68,7 @@ struct options
 #ifdef HAVE_METALINK
   char *input_metalink;         /* Input metalink file */
   bool metalink_over_http;      /* Use Metalink if present in HTTP response */
+  int metaurl;                  /* Metalink application/metalink4+xml metaurl ordinal number. */
   char *preferred_location;     /* Preferred location for Metalink resources */
 #endif
   char *choose_config;          /* Specified config file */

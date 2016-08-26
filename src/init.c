@@ -249,6 +249,7 @@ static const struct {
   { "maxredirect",      &opt.max_redirect,      cmd_number },
 #ifdef HAVE_METALINK
   { "metalinkoverhttp", &opt.metalink_over_http, cmd_boolean },
+  { "metaurl",          &opt.metaurl,            cmd_number_inf },
 #endif
   { "method",           &opt.method,            cmd_string_uppercase },
   { "mirror",           NULL,                   cmd_spec_mirror },
@@ -384,6 +385,10 @@ defaults (void)
      illegal, but porting Wget to a machine where NULL is not all-zero
      bit pattern will be the least of the implementors' worries.  */
   xzero (opt);
+
+#ifdef HAVE_METALINK
+  opt.metaurl = -1;
+#endif
 
   opt.cookies = true;
   opt.verbose = -1;

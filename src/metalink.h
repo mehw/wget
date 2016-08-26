@@ -50,6 +50,7 @@ int metalink_meta_cmp (const void* meta1, const void* meta2);
 
 int metalink_check_safe_path(const char *path);
 
+void replace_metalink_basename (char **name, char *ref);
 char *get_metalink_basename (char *name);
 void strip_suffix_component (char *name);
 void append_suffix_number (char **str, const char *sep, wgint num);
@@ -57,6 +58,9 @@ void clean_metalink_string (char **str);
 void dequote_metalink_string (char **str);
 void badhash_suffix (char *name);
 void badhash_or_remove (char *name);
+uerr_t fetch_metalink_file (const char *url_str,
+                            bool resume, bool metalink_http,
+                            const char *filename, char **destname);
 
 bool find_key_value (const char *start,
                      const char *end,
