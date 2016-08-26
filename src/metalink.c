@@ -126,8 +126,8 @@ retrieve_from_metalink (const metalink_t* metalink)
 
       /* With Metalink/HTTP, trust the metalink file name (from cli).
          With --trust-server-names, trust the Metalink/XML file name,
-         otherwise, use the basename of --input-metalink, then replace
-         the suffix with the metalink file counter.  */
+         otherwise, use the basename of --input-metalink followed by
+         the metalink file counter as suffix.  */
       if (metalink->origin || opt.trustservernames)
         {
           trsrname = xstrdup (mfile->name);
@@ -135,7 +135,6 @@ retrieve_from_metalink (const metalink_t* metalink)
       else
         {
           trsrname = xstrdup (get_metalink_basename (opt.input_metalink));
-          strip_suffix_component (trsrname);
           append_suffix_number (&trsrname, ".#", mfc);
         }
 

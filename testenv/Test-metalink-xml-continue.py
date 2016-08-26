@@ -11,8 +11,8 @@ import hashlib
     With --trust-server-names, trust the metalink:file names.
 
     Without --trust-server-names, don't trust the metalink:file names:
-    use the basename of --input-metalink, strip the suffix and add a
-    sequential number (e.g. .#1, .#2, etc.).
+    use the basename of --input-metalink, and add a sequential number
+    (e.g. .#1, .#2, etc.).
 
     Strip the directory from unsafe paths.
 """
@@ -107,24 +107,24 @@ MetaXml = \
 wrong_file = WgetFile ("wrong_file", bad)
 
 # partial File1_down to continue
-File0_part = WgetFile ("test.#1", File0)
+File0_part = WgetFile ("test.meta4.#1", File0)
 
 File1_orig = WgetFile ("File1", File1)
-File1_down = WgetFile ("test.#1", File1)
+File1_down = WgetFile ("test.meta4.#1", File1)
 File1_nono = WgetFile ("File1_lowPref", File1_lowPref)
 
 # no good resources on purpose, this file shall be kept
-File2_ouch = WgetFile ("test.#2", bad)
+File2_ouch = WgetFile ("test.meta4.#2", bad)
 
 File3_orig = WgetFile ("File3", File3)
-File3_down = WgetFile ("test.#3", File3)
+File3_down = WgetFile ("test.meta4.#3", File3)
 File3_nono = WgetFile ("File3_lowPref", File3_lowPref)
 
 # no good resources on purpose, this file shall be kept
-File4_ouch = WgetFile ("test.#4", bad)
+File4_ouch = WgetFile ("test.meta4.#4", bad)
 
 File5_orig = WgetFile ("File5", File5)
-File5_down = WgetFile ("test.#5", File5)
+File5_down = WgetFile ("test.meta4.#5", File5)
 File5_nono = WgetFile ("File5_lowPref", File5_lowPref)
 
 MetaFile = WgetFile ("test.meta4", MetaXml)

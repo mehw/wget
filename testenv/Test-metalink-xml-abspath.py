@@ -11,8 +11,8 @@ import hashlib
     With --trust-server-names, trust the metalink:file names.
 
     Without --trust-server-names, don't trust the metalink:file names:
-    use the basename of --input-metalink, strip the suffix and add a
-    sequential number (e.g. .#1, .#2, etc.).
+    use the basename of --input-metalink, and add a sequential number
+    (e.g. .#1, .#2, etc.).
 
     Strip the directory from unsafe paths.
 """
@@ -74,7 +74,7 @@ File1_orig = WgetFile ("File1", File1)
 File1_nono = WgetFile ("File1_lowPref", File1_lowPref)
 
 File2_orig = WgetFile ("File2", File2)
-File2_down = WgetFile ("test.#1", File2)
+File2_down = WgetFile ("test.meta4.#1", File2)
 File2_nono = WgetFile ("File2_lowPref", File2_lowPref)
 
 MetaFile = WgetFile ("test.meta4", MetaXml)

@@ -65,9 +65,7 @@ ignored, see '1. Security features'.
 ====================================
 
 When --trust-server-names is off, the basename of the --input-metalink
-file, if available, or of the mother URL, once it has been stripped of
-its suffix component is trusted.  A Metalink/HTTP not redirecting to a
-Metalink/XML has its command line URL trusted by default.
+file, if available, or of the mother URL is trusted.
 
 The files described by a Metalink/XML file will be named sequentially
 applying a suffix to the trusted name.
