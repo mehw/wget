@@ -2896,9 +2896,13 @@ metalink_from_http (const struct response *resp, const struct http_stat *hs,
              Therefore we convert: base64 -> binary -> hex.  */
           const size_t dig_hash_str_len = strlen (dig_hash);
           char *bin_hash = alloca (dig_hash_str_len * 3 / 4 + 1);
-          size_t hash_bin_len;
+          ssize_t hash_bin_len;
 
           hash_bin_len = base64_decode (dig_hash, bin_hash);
+
+          /* Detect malformed base64 input.  */
+          if (hash_bin_len < 0)
+            continue;
 
           /* One slot for me, one for zero-termination.  */
           mfile->checksums =
@@ -2907,8 +2911,8 @@ metalink_from_http (const struct response *resp, const struct http_stat *hs,
           mfile->checksums[hash_count] = xnew (metalink_checksum_t);
           mfile->checksums[hash_count]->type = dig_type;
 
-          mfile->checksums[hash_count]->hash = xmalloc (hash_bin_len * 2 + 1);
-          wg_hex_to_string (mfile->checksums[hash_count]->hash, bin_hash, hash_bin_len);
+          mfile->checksums[hash_count]->hash = xmalloc ((size_t)hash_bin_len * 2 + 1);
+          wg_hex_to_string (mfile->checksums[hash_count]->hash, bin_hash, (size_t)hash_bin_len);
 
           xfree (dig_hash);
 
