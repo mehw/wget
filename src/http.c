@@ -2706,14 +2706,14 @@ skip_content_type:
       DEBUGP (("URL=%s\n", urlstr));
       DEBUGP (("rel=%s\n", rel));
 
+      if (!strcmp (rel, "describedby"))
+        find_key_value (attrs_beg, val_end, "type", &reltype);
+
       /* Handle signatures.
          Libmetalink only supports one signature per file. Therefore we stop
          as soon as we successfully get first supported signature.  */
       if (sig_count == 0 &&
-          !strcmp (rel, "describedby") &&
-          find_key_value (attrs_beg, val_end, "type", &reltype) &&
-          !strcmp (reltype, "application/pgp-signature")
-          )
+          reltype && !strcmp (reltype, "application/pgp-signature"))
         {
           /* Download the signature to a temporary file.  */
           FILE *_output_stream = output_stream;
@@ -2881,9 +2881,7 @@ skip_content_type:
         } /* Handle resource link (rel=duplicate).  */
 
       /* Handle Metalink/XML resources.  */
-      else if (!strcmp (rel, "describedby") &&
-               find_key_value (attrs_beg, val_end, "type", &reltype) &&
-               !strcmp (reltype, "application/metalink4+xml"))
+      else if (reltype && !strcmp (reltype, "application/metalink4+xml"))
         {
           metalink_metaurl_t murl = {0};
           char *pristr;
@@ -2938,8 +2936,8 @@ skip_content_type:
       else
         DEBUGP (("This link header was not used for Metalink\n"));
 
-      xfree (urlstr);
       xfree (reltype);
+      xfree (urlstr);
       xfree (rel);
     } /* Iterate over link headers.  */
 
