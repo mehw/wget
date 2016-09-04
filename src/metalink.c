@@ -402,6 +402,10 @@ retrieve_from_metalink (const metalink_t* metalink)
               badhash_or_remove (destname);
               xfree (destname);
             }
+          else if (!output_stream && destname)
+            {
+              xfree (destname);
+            }
 
           retr_err = METALINK_RETR_ERROR;
 
