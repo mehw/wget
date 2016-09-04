@@ -2979,7 +2979,11 @@ skip_content_type:
 
           /* Detect malformed base64 input.  */
           if (hash_bin_len < 0)
-            continue;
+            {
+              xfree (dig_type);
+              xfree (dig_hash);
+              continue;
+            }
 
           /* One slot for me, one for zero-termination.  */
           mfile->checksums =
