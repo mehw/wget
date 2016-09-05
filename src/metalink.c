@@ -1085,10 +1085,11 @@ dequote_metalink_string (char **str)
     return;
 
   str_len = strlen (*str); /* current string length */
-  new_len = str_len - 2;   /* predict dequoted length */
 
-  if (new_len < 0)
+  if (str_len < 2)
     return;
+
+  new_len = str_len - 2;   /* predict dequoted length */
 
   beg = *str;                 /* begin of current string */
   end = *str + (str_len - 1); /* end of current string */
