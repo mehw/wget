@@ -2573,6 +2573,8 @@ metalink_from_http (const struct response *resp, const struct http_stat *hs,
   /* Process the Content-Type header.  */
   if (resp_header_locate (resp, "Content-Type", 0, &val_beg, &val_end) != -1)
     {
+      metalink_metaurl_t murl = {0};
+
       const char *type_beg, *type_end;
       char *typestr = NULL;
       char *namestr = NULL;
@@ -2606,8 +2608,6 @@ metalink_from_http (const struct response *resp, const struct http_stat *hs,
           xfree (typestr);
           goto skip_content_type;
         }
-
-      metalink_metaurl_t murl = {0};
 
       /*
         Valid ranges for the "pri" attribute are from

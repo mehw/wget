@@ -204,9 +204,16 @@ retrieve_from_metalink (const metalink_t* metalink)
           if (mfile->metaurls && mfile->metaurls[0])
             for (murl_ptr = mfile->metaurls; *murl_ptr; murl_ptr++)
               {
+                metalink_t* metaurl_xml;
+                metalink_error_t meta_err;
                 metalink_metaurl_t *murl = *murl_ptr;
+
+                char *_dir_prefix = opt.dir_prefix;
+                char *_input_metalink = opt.input_metalink;
+
                 char *metafile = NULL;
                 char *metadest = NULL;
+                char *metadir = NULL;
 
                 abs_count++;
 
@@ -267,9 +274,6 @@ retrieve_from_metalink (const metalink_t* metalink)
                   }
 
                 /* Parse Metalink/XML.  */
-                metalink_t* metaurl_xml;
-                metalink_error_t meta_err;
-
                 meta_err = metalink_parse_file (metadest, &metaurl_xml);
 
                 /* On failure, try the next metalink metaurl.  */
@@ -307,11 +311,7 @@ retrieve_from_metalink (const metalink_t* metalink)
                       }
                   }
 
-                /* Re-implement the "Directory Options".  */
-                char *_dir_prefix = opt.dir_prefix;
-                char *_input_metalink = opt.input_metalink;
-                char *metadir = NULL;
-
+                /* Insert the current "Directory Options".  */
                 if (metalink->origin)
                   {
                     /* WARNING: Do not use lib/dirname.c (dir_name) to
@@ -1162,6 +1162,13 @@ fetch_metalink_file (const char *url_str,
                      bool resume, bool metalink_http,
                      const char *filename, char **destname)
 {
+  FILE *_output_stream = output_stream;
+  bool _output_stream_regular = output_stream_regular;
+  char *_output_document = opt.output_document;
+  bool _metalink_http = opt.metalink_over_http;
+
+  char *local_file = NULL;
+
   uerr_t retr_err = URLERROR;
 
   struct iri *iri;
@@ -1182,13 +1189,6 @@ fetch_metalink_file (const char *url_str,
       xfree (error);
       return retr_err;
     }
-
-  FILE *_output_stream = output_stream;
-  bool _output_stream_regular = output_stream_regular;
-  char *_output_document = opt.output_document;
-  bool _metalink_http = opt.metalink_over_http;
-
-  char *local_file = NULL;
 
   if (resume)
     /* continue previous download */
