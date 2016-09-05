@@ -195,7 +195,7 @@ retrieve_from_metalink (const metalink_t* metalink)
           metalink_metaurl_t **murl_ptr;
           int abs_count = 0, meta_count = 0;
 
-          uerr_t retr_err = METALINK_MISSING_RESOURCE;
+          uerr_t x_retr_err = METALINK_MISSING_RESOURCE;
 
           opt.metaurl = -1;
 
@@ -249,16 +249,16 @@ retrieve_from_metalink (const metalink_t* metalink)
 
                 /* For security reasons, always save metalink metaurl
                    files as new unique files. Keep them on failure.  */
-                retr_err = fetch_metalink_file (murl->url, false, false,
-                                                metafile, &metadest);
+                x_retr_err = fetch_metalink_file (murl->url, false, false,
+                                                  metafile, &metadest);
 
                 /* On failure, try the next metalink metaurl.  */
-                if (retr_err != RETROK)
+                if (x_retr_err != RETROK)
                   {
                     logprintf (LOG_VERBOSE,
                                _("Failed to download %s. Skipping metaurl.\n"),
                                quote (metadest ? metadest : metafile));
-                    inform_exit_status (retr_err);
+                    inform_exit_status (x_retr_err);
                     xfree (metadest);
                     xfree (metafile);
                     if (_metaurl > 0)
@@ -277,8 +277,8 @@ retrieve_from_metalink (const metalink_t* metalink)
                   {
                     logprintf (LOG_NOTQUIET,
                                _("Unable to parse metaurl file %s.\n"), quote (metadest));
-                    retr_err = METALINK_PARSE_ERROR;
-                    inform_exit_status (retr_err);
+                    x_retr_err = METALINK_PARSE_ERROR;
+                    inform_exit_status (x_retr_err);
                     xfree (metadest);
                     xfree (metafile);
                     if (_metaurl > 0)
@@ -290,17 +290,17 @@ retrieve_from_metalink (const metalink_t* metalink)
                    was specified by the user.  */
                 if (opt.preferred_location && opt.preferred_location[0])
                   {
-                    metalink_file_t **mfile_ptr;
-                    for (mfile_ptr = metaurl_xml->files; *mfile_ptr; mfile_ptr++)
+                    metalink_file_t **x_mfile_ptr;
+                    for (x_mfile_ptr = metaurl_xml->files; *x_mfile_ptr; x_mfile_ptr++)
                       {
-                        metalink_resource_t **mres_ptr;
-                        metalink_file_t *mfile = *mfile_ptr;
+                        metalink_resource_t **x_mres_ptr;
+                        metalink_file_t *x_mfile = *x_mfile_ptr;
                         size_t mres_count = 0;
 
-                        for (mres_ptr = mfile->resources; *mres_ptr; mres_ptr++)
+                        for (x_mres_ptr = x_mfile->resources; *x_mres_ptr; x_mres_ptr++)
                           mres_count++;
 
-                        stable_sort (mfile->resources,
+                        stable_sort (x_mfile->resources,
                                      mres_count,
                                      sizeof (metalink_resource_t *),
                                      metalink_res_cmp);
@@ -328,9 +328,9 @@ retrieve_from_metalink (const metalink_t* metalink)
                 opt.dir_prefix = metadir;
                 opt.input_metalink = metadest;
 
-                retr_err = retrieve_from_metalink (metaurl_xml);
+                x_retr_err = retrieve_from_metalink (metaurl_xml);
 
-                if (retr_err != RETROK)
+                if (x_retr_err != RETROK)
                   logprintf (LOG_NOTQUIET,
                              _("Could not download all resources from %s.\n"),
                              quote (metadest));
@@ -348,7 +348,7 @@ retrieve_from_metalink (const metalink_t* metalink)
                 break;
               }
 
-          if (retr_err != RETROK)
+          if (x_retr_err != RETROK)
             logprintf (LOG_NOTQUIET, _("Metaurls processing returned with error.\n"));
 
           xfree (destname);
@@ -362,7 +362,7 @@ retrieve_from_metalink (const metalink_t* metalink)
 
           opt.metaurl = _metaurl;
 
-          return retr_err;
+          return x_retr_err;
         }
 
       /* Resources are sorted by priority.  */
