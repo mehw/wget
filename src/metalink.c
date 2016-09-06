@@ -72,7 +72,7 @@ retrieve_from_metalink (const metalink_t* metalink)
   unsigned mfc = 0;
 
   /* metalink retrieval type */
-  char *metatpy = metalink->origin ? "Metalink/HTTP" : "Metalink/XML";
+  const char *metatpy = metalink->origin ? "Metalink/HTTP" : "Metalink/XML";
 
   /* metalink mother source */
   char *metasrc = metalink->origin ? metalink->origin : opt.input_metalink;
