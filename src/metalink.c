@@ -40,6 +40,7 @@ as that of the covered work.  */
 #include "sha1.h"
 #include "sha256.h"
 #include "sha512.h"
+#include "xmemdup0.h"
 #include "xstrndup.h"
 #include "c-strcase.h"
 #include <errno.h>
@@ -1061,11 +1062,7 @@ clean_metalink_string (char **str)
 
   len = end - beg;
 
-  if (!(new = xmalloc (len + 1)))
-    return;
-
-  strncpy (new, beg, len);
-  new[len] = '\0';
+  new = xmemdup0 (beg, len);
   xfree (*str);
   *str = new;
 }
@@ -1098,11 +1095,7 @@ dequote_metalink_string (char **str)
   if (!(*beg == '\"' && *end == '\"') && !(*beg == '\'' && *end == '\''))
     return;
 
-  if (!(new = xmalloc (new_len + 1)))
-    return;
-
-  strncpy (new, (beg + 1), new_len);
-  new[new_len] = '\0';
+  new = xmemdup0 (beg + 1, new_len);
   xfree (*str);
   *str = new;
 }
