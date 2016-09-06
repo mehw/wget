@@ -121,7 +121,7 @@ retrieve_from_metalink (const metalink_t* metalink)
       /* The directory prefix for opt.metalink_over_http is handled by
          src/url.c (url_file_name), do not add it a second time.  */
       if (!metalink->origin && opt.dir_prefix && strlen (opt.dir_prefix))
-        planname = concat_strings (opt.dir_prefix, "/", mfile->name, '\0');
+        planname = aprintf("%s/%s", opt.dir_prefix, mfile->name);
       else
         planname = xstrdup (mfile->name);
 
@@ -141,7 +141,7 @@ retrieve_from_metalink (const metalink_t* metalink)
 
       /* Add the directory prefix for opt.input_metalink.  */
       if (!metalink->origin && opt.dir_prefix && strlen (opt.dir_prefix))
-        filename = concat_strings (opt.dir_prefix, "/", trsrname, '\0');
+        filename = aprintf("%s/%s", opt.dir_prefix, trsrname);
       else
         filename = xstrdup (trsrname);
 
@@ -961,7 +961,7 @@ replace_metalink_basename (char **name, char *ref)
   dir = xstrndup (*name, dir_len);
 
   /* Replace the old basename.  */
-  new = concat_strings (dir, file, '\0');
+  new = aprintf("%s%s", dir ? dir : "", file ? file : "");
   xfree (*name);
   *name = new;
 
@@ -1022,7 +1022,7 @@ append_suffix_number (char **str, const char *sep, wgint num)
   char *new, buf[24];
 
   number_to_string (buf, num);
-  new = concat_strings (*str, sep, buf, '\0');
+  new = aprintf("%s%s%s", *str ? *str : "", sep ? sep : "", buf);
   xfree (*str);
   *str = new;
 }
