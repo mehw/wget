@@ -1061,7 +1061,7 @@ clean_metalink_string (char **str)
 
   len = end - beg;
 
-  if (!(new = malloc (len + 1)))
+  if (!(new = xmalloc (len + 1)))
     return;
 
   strncpy (new, beg, len);
@@ -1098,7 +1098,7 @@ dequote_metalink_string (char **str)
   if (!(*beg == '\"' && *end == '\"') && !(*beg == '\'' && *end == '\''))
     return;
 
-  if (!(new = malloc (new_len + 1)))
+  if (!(new = xmalloc (new_len + 1)))
     return;
 
   strncpy (new, (beg + 1), new_len);
