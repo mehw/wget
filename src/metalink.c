@@ -1183,6 +1183,8 @@ fetch_metalink_file (const char *url_str,
       return retr_err;
     }
 
+  output_stream = NULL;
+
   if (resume)
     /* continue previous download */
     output_stream = fopen (filename, "ab");
@@ -1223,6 +1225,12 @@ fetch_metalink_file (const char *url_str,
         *destname = local_file;
       else
         xfree (local_file);
+    }
+
+  if (output_stream)
+    {
+      fclose (output_stream);
+      output_stream = NULL;
     }
 
   opt.metalink_over_http = _metalink_http;
