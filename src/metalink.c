@@ -525,6 +525,8 @@ retrieve_from_metalink (const metalink_t* metalink)
                   if (local_file_size == -1)
                     {
                       logprintf (LOG_NOTQUIET, _("Could not get downloaded file's size.\n"));
+                      fclose (local_file);
+                      local_file = NULL;
                       continue;
                     }
 
@@ -535,6 +537,8 @@ retrieve_from_metalink (const metalink_t* metalink)
                   if (local_file_size != (wgint) mfile->size)
                     {
                       logprintf (LOG_NOTQUIET, _("Size mismatch for file %s.\n"), quote (destname));
+                      fclose (local_file);
+                      local_file = NULL;
                       continue;
                     }
                   else
