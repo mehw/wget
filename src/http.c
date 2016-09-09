@@ -2589,7 +2589,11 @@ metalink_from_http (const struct response *resp, const struct http_stat *hs,
 
       /* Find end of type.  */
       type_end = type_beg + 1;
-      while (type_end < val_end && *type_end != (';' || ' ' || '\r' || '\n'))
+      while (type_end < val_end &&
+             *type_end != ';' &&
+             *type_end != ' ' &&
+             *type_end != '\r' &&
+             *type_end != '\n')
         type_end++;
 
       if (type_beg >= val_end || type_end > val_end)
