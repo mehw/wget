@@ -140,7 +140,7 @@ retrieve_from_metalink (const metalink_t* metalink)
 
       /* Add the directory prefix for opt.input_metalink.  */
       if (!metalink->origin && opt.dir_prefix && strlen (opt.dir_prefix))
-        filename = aprintf("%s/%s", opt.dir_prefix, trsrname);
+        filename = aprintf ("%s/%s", opt.dir_prefix, trsrname);
       else
         filename = xstrdup (trsrname);
 
@@ -764,7 +764,7 @@ append_suffix_number (char **str, const char *sep, wgint num)
   char *new, buf[24];
 
   number_to_string (buf, num);
-  new = aprintf("%s%s%s", *str ? *str : "", sep ? sep : "", buf);
+  new = aprintf ("%s%s%s", *str ? *str : "", sep ? sep : "", buf);
   xfree (*str);
   *str = new;
 }
