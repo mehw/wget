@@ -957,7 +957,7 @@ replace_metalink_basename (char **name, char *ref)
   dir = xstrndup (*name, dir_len);
 
   /* Replace the old basename.  */
-  new = aprintf("%s%s", dir ? dir : "", file ? file : "");
+  new = aprintf ("%s%s", dir ? dir : "", file ? file : "");
   xfree (*name);
   *name = new;
 
