@@ -204,11 +204,8 @@ retrieve_from_metalink (const metalink_t* metalink)
 
                 Bugfix: point output_stream to filename if it exists.
               */
-              if (!output_stream && (output_stream = fopen (filename, "rb")))
-                {
-                  fclose (output_stream);
-                  output_stream = fopen (filename, "ab");
-                }
+              if (!output_stream && file_exists_p (filename))
+                output_stream = fopen (filename, "ab");
             }
           url_free (url);
           iri_free (iri);
