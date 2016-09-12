@@ -54,6 +54,12 @@ as that of the covered work.  */
 #include "test.h"
 #endif
 
+#if defined(WINDOWS) || defined(MSDOS)
+# define ISSEP(c) ((c) == '/' || (c) == '\\')
+#else
+# define ISSEP(c) ((c) == '/')
+#endif
+
 /* Loop through all files in metalink structure and retrieve them.
    Returns RETROK if all files were downloaded.
    Returns last retrieval error (from retrieve_url) if some files
@@ -685,10 +691,18 @@ gpg_skip_verification:
 char *
 get_metalink_basename (char *name)
 {
-  char *basename = name;
+  char *basename;
 
-  while ((name = strstr (basename, "/")))
-    basename = name + 1;
+  if (!name)
+    return NULL;
+
+  basename = name + strlen (name);
+
+  while (basename > name && !ISSEP (*basename))
+    --basename;
+
+  if (ISSEP (*basename))
+    ++basename;
 
   return metalink_check_safe_path (basename) ? basename : NULL;
 }
