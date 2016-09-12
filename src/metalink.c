@@ -104,7 +104,7 @@ retrieve_from_metalink (const metalink_t* metalink)
       /* The directory prefix for opt.metalink_over_http is handled by
          src/url.c (url_file_name), do not add it a second time.  */
       if (!metalink->origin && opt.dir_prefix && strlen (opt.dir_prefix))
-        filename = aprintf("%s/%s", opt.dir_prefix, mfile->name);
+        filename = aprintf ("%s/%s", opt.dir_prefix, mfile->name);
       else
         filename = xstrdup (mfile->name);
 
