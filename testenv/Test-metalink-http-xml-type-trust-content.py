@@ -2,7 +2,6 @@
 from sys import exit
 from test.http_test import HTTPTest
 from misc.wget_file import WgetFile
-import re
 import hashlib
 from base64 import b64encode
 
@@ -201,13 +200,13 @@ http_test.server_setup()
 ### Get and use dynamic server sockname
 srv_host, srv_port = http_test.servers[0].server_inst.socket.getsockname ()
 
-MetaXml = re.sub (r'{{FILE1_HASH}}', File1_sha256, MetaXml)
-MetaXml = re.sub (r'{{FILE2_HASH}}', File2_sha256, MetaXml)
-MetaXml = re.sub (r'{{FILE3_HASH}}', File3_sha256, MetaXml)
-MetaXml = re.sub (r'{{FILE4_HASH}}', File4_sha256, MetaXml)
-MetaXml = re.sub (r'{{FILE5_HASH}}', File5_sha256, MetaXml)
-MetaXml = re.sub (r'{{SRV_HOST}}', srv_host, MetaXml)
-MetaXml = re.sub (r'{{SRV_PORT}}', str (srv_port), MetaXml)
+MetaXml = MetaXml.replace('{{FILE1_HASH}}', File1_sha256)
+MetaXml = MetaXml.replace('{{FILE2_HASH}}', File2_sha256)
+MetaXml = MetaXml.replace('{{FILE3_HASH}}', File3_sha256)
+MetaXml = MetaXml.replace('{{FILE4_HASH}}', File4_sha256)
+MetaXml = MetaXml.replace('{{FILE5_HASH}}', File5_sha256)
+MetaXml = MetaXml.replace('{{SRV_HOST}}', srv_host)
+MetaXml = MetaXml.replace('{{SRV_PORT}}', str (srv_port))
 MetaHTTP_down.content = MetaXml
 
 MetaHTTP.content = MetaXml
