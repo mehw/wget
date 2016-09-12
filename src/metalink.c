@@ -306,11 +306,10 @@ retrieve_from_metalink (const metalink_t* metalink)
                         for (x_mres_ptr = x_mfile->resources; *x_mres_ptr; x_mres_ptr++)
                           mres_count++;
 
-                        if (mres_count > 1)
-                          stable_sort (x_mfile->resources,
-                                       mres_count,
-                                       sizeof (metalink_resource_t *),
-                                       metalink_res_cmp);
+                        stable_sort (x_mfile->resources,
+                                     mres_count,
+                                     sizeof (metalink_resource_t *),
+                                     metalink_res_cmp);
                       }
                   }
 
