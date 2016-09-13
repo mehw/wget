@@ -831,27 +831,20 @@ clean_metalink_string (char **str)
 void
 dequote_metalink_string (char **str)
 {
-  char *new, *beg, *end;
-  size_t str_len, new_len;
+  char *new;
+  size_t str_len;
 
-  if (!str || !*str)
+  if (!str || !*str || ((*str)[0] != '\"' && (*str)[0] != '\''))
     return;
 
   str_len = strlen (*str); /* current string length */
 
-  if (str_len < 2)
-    return;
-
-  new_len = str_len - 2;   /* predict dequoted length */
-
-  beg = *str;                 /* begin of current string */
-  end = *str + (str_len - 1); /* end of current string */
-
   /* Verify if the current string is surrounded by quotes.  */
-  if (!(*beg == '\"' && *end == '\"') && !(*beg == '\'' && *end == '\''))
+  if (str_len < 2 || (*str)[0] != (*str)[str_len - 1])
     return;
 
-  new = xmemdup0 (beg + 1, new_len);
+  /* Dequoted string.  */
+  new = xmemdup0 (*str + 1, str_len - 2);
   xfree (*str);
   *str = new;
 }
