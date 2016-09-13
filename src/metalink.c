@@ -40,6 +40,7 @@ as that of the covered work.  */
 #include "sha1.h"
 #include "sha256.h"
 #include "sha512.h"
+#include "dosname.h"
 #include "xstrndup.h"
 #include "c-strcase.h"
 #include <errno.h>
@@ -52,12 +53,6 @@ as that of the covered work.  */
 
 #ifdef TESTING
 #include "test.h"
-#endif
-
-#if defined(WINDOWS) || defined(MSDOS)
-# define ISSEP(c) ((c) == '/' || (c) == '\\')
-#else
-# define ISSEP(c) ((c) == '/')
 #endif
 
 /* Loop through all files in metalink structure and retrieve them.
@@ -691,18 +686,16 @@ gpg_skip_verification:
 char *
 get_metalink_basename (char *name)
 {
+  int n;
   char *basename;
 
   if (!name)
     return NULL;
 
-  basename = name + strlen (name);
+  basename = last_component (name);
 
-  while (basename > name && !ISSEP (*basename))
-    --basename;
-
-  if (ISSEP (*basename))
-    ++basename;
+  while ((n = FILE_SYSTEM_PREFIX_LEN (basename)))
+    basename += n;
 
   return metalink_check_safe_path (basename) ? basename : NULL;
 }
