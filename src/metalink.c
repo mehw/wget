@@ -931,37 +931,31 @@ gpg_skip_verification:
 void
 replace_metalink_basename (char **name, char *ref)
 {
-  size_t dir_len = 0;
-  char *p, *dir, *file, *new;
+  int n;
+  char *new, *basename;
 
   if (!name)
     return;
 
-  /* New basename from file name reference.  */
-  file = ref;
-  if (file)
-    {
-      p = strrchr (file, '/');
-      if (p)
-        file = p + 1;
-    }
-
-  /* Old directory.  */
-  dir = NULL;
+  /* Strip old basename.  */
   if (*name)
     {
-      p = strrchr (*name, '/');
-      if (p)
-        dir_len = (p - *name) + 1;
+      basename = last_component (*name);
+
+      if (basename == *name)
+        xfree (*name);
+      else
+        *basename = '\0';
     }
-  dir = xstrndup (*name, dir_len);
+
+  /* New basename from file name reference.  */
+  if (ref)
+    ref = last_component (ref);
 
   /* Replace the old basename.  */
-  new = aprintf ("%s%s", dir ? dir : "", file ? file : "");
+  new = aprintf ("%s%s", *name ? *name : "", ref ? ref : "");
   xfree (*name);
   *name = new;
-
-  xfree (dir);
 }
 
 /*
