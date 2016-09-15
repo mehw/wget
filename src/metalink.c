@@ -950,7 +950,13 @@ replace_metalink_basename (char **name, char *ref)
 
   /* New basename from file name reference.  */
   if (ref)
-    ref = last_component (ref);
+    {
+      ref = last_component (ref);
+
+      if (!*name)
+        while ((n = FILE_SYSTEM_PREFIX_LEN (ref)))
+          ref += n;
+    }
 
   /* Replace the old basename.  */
   new = aprintf ("%s%s", *name ? *name : "", ref ? ref : "");
