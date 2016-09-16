@@ -932,7 +932,7 @@ void
 replace_metalink_basename (char **name, char *ref)
 {
   int n;
-  char *new, *basename;
+  char *p, *new, *basename;
 
   if (!name)
     return;
@@ -950,18 +950,38 @@ replace_metalink_basename (char **name, char *ref)
 
   /* New basename from file name reference.  */
   if (ref)
-    {
-      ref = last_component (ref);
-
-      if (!*name)
-        while ((n = FILE_SYSTEM_PREFIX_LEN (ref)))
-          ref += n;
-    }
+    ref = last_component (ref);
 
   /* Replace the old basename.  */
   new = aprintf ("%s%s", *name ? *name : "", ref ? ref : "");
   xfree (*name);
   *name = new;
+
+  /* Remove prefix drive letters if required, i.e. when in w32
+     environments.  */
+  p = new;
+  while (p[0] != '\0')
+    {
+      while ((n = FILE_SYSTEM_PREFIX_LEN (p)))
+        p += n;
+
+      if (p != new)
+        {
+          while (ISSLASH (p[0]))
+            ++p;
+          new = p;
+          continue;
+        }
+
+      break;
+    }
+
+  if (*name != new)
+    {
+      new = xstrdup (new);
+      xfree (*name);
+      *name = new;
+    }
 }
 
 /*
