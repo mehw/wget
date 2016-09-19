@@ -118,9 +118,9 @@ File5_orig = WgetFile ("File5", File5)
 File5_down = WgetFile ("File5", File5)
 File5_nono = WgetFile ("File5_lowPref", File5_lowPref)
 
-MetaFile = WgetFile ("test.meta4", MetaXml)
+MetaFile = WgetFile ("test.metalink", MetaXml)
 
-WGET_OPTIONS = "--continue --input-metalink test.meta4"
+WGET_OPTIONS = "--continue --input-metalink test.metalink"
 WGET_URLS = [[]]
 
 Files = [[
