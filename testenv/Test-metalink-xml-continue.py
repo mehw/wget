@@ -106,24 +106,24 @@ MetaXml = \
 wrong_file = WgetFile ("wrong_file", bad)
 
 # partial File1_down to continue
-File0_part = WgetFile ("test.meta4.#1", File0)
+File0_part = WgetFile ("test.metalink.#1", File0)
 
 File1_orig = WgetFile ("File1", File1)
-File1_down = WgetFile ("test.meta4.#1", File1)
+File1_down = WgetFile ("test.metalink.#1", File1)
 File1_nono = WgetFile ("File1_lowPref", File1_lowPref)
 
 # no good resources on purpose, this file shall be kept
-File2_ouch = WgetFile ("test.meta4.#2", bad)
+File2_ouch = WgetFile ("test.metalink.#2", bad)
 
 File3_orig = WgetFile ("File3", File3)
-File3_down = WgetFile ("test.meta4.#3", File3)
+File3_down = WgetFile ("test.metalink.#3", File3)
 File3_nono = WgetFile ("File3_lowPref", File3_lowPref)
 
 # no good resources on purpose, this file shall be kept
-File4_ouch = WgetFile ("test.meta4.#4", bad)
+File4_ouch = WgetFile ("test.metalink.#4", bad)
 
 File5_orig = WgetFile ("File5", File5)
-File5_down = WgetFile ("test.meta4.#5", File5)
+File5_down = WgetFile ("test.metalink.#5", File5)
 File5_nono = WgetFile ("File5_lowPref", File5_lowPref)
 
 MetaFile = WgetFile ("test.metalink", MetaXml)

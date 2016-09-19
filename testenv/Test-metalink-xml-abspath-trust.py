@@ -77,9 +77,9 @@ File2_orig = WgetFile ("File2", File2)
 File2_down = WgetFile ("File2", File2)
 File2_nono = WgetFile ("File2_lowPref", File2_lowPref)
 
-MetaFile = WgetFile ("test.meta4", MetaXml)
+MetaFile = WgetFile ("test.metalink", MetaXml)
 
-WGET_OPTIONS = "--trust-server-names --input-metalink test.meta4"
+WGET_OPTIONS = "--trust-server-names --input-metalink test.metalink"
 WGET_URLS = [[]]
 
 Files = [[
