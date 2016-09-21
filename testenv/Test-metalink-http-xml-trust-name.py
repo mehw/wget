@@ -145,9 +145,9 @@ MetaXml2 = \
 
 LinkHeaders = [
     # This file has the lowest priority, and should go last
-    "<http://{{SRV_HOST}}:{{SRV_PORT}}/test1.meta4>; rel=describedby; pri=2; type=\"application/metalink4+xml\"; name=\"newname.metalink\"",
+    "<http://{{SRV_HOST}}:{{SRV_PORT}}/test1.metalink>; rel=describedby; pri=2; type=\"application/metalink4+xml\"; name=\"newname.metalink\"",
     # This file has the highest priority, and should go first
-    "<http://{{SRV_HOST}}:{{SRV_PORT}}/test2.meta4>; rel=describedby; pri=1; type=\"application/metalink4+xml\""
+    "<http://{{SRV_HOST}}:{{SRV_PORT}}/test2.metalink>; rel=describedby; pri=1; type=\"application/metalink4+xml\""
 ]
 
 # This will be filled as soon as we know server hostname and port
@@ -177,10 +177,10 @@ File5_orig = WgetFile ("File5", File5)
 File5_down = WgetFile ("dir/File5", File5)
 File5_nono = WgetFile ("File5_lowPref", File5_lowPref)
 
-MetaFile1 = WgetFile ("test1.meta4", MetaXml1)
+MetaFile1 = WgetFile ("test1.metalink", MetaXml1)
 MetaFile1_down = WgetFile ("newname.metalink", MetaXml1)
 
-MetaFile2 = WgetFile ("test2.meta4", MetaXml2)
+MetaFile2 = WgetFile ("test2.metalink", MetaXml2)
 
 WGET_OPTIONS = "--trust-server-names --metalink-over-http --metalink-index=2"
 WGET_URLS = [["main.metalink"]]
@@ -189,7 +189,7 @@ RequestList = [[
     "HEAD /main.metalink",
     "GET /404",
     "GET /wrong_file",
-    "GET /test1.meta4",
+    "GET /test1.metalink",
     "GET /File1",
     "GET /File2",
     "GET /File4",
