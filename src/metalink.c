@@ -962,7 +962,7 @@ replace_metalink_basename (char **name, char *ref)
   p = new;
   while (p[0] != '\0')
     {
-      while ((n = FILE_SYSTEM_PREFIX_LEN (p)))
+      while ((n = FILE_SYSTEM_PREFIX_LEN (p)) > 0)
         p += n;
 
       if (p != new)
