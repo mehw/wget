@@ -694,7 +694,7 @@ get_metalink_basename (char *name)
 
   basename = last_component (name);
 
-  while ((n = FILE_SYSTEM_PREFIX_LEN (basename)))
+  while ((n = FILE_SYSTEM_PREFIX_LEN (basename)) > 0)
     basename += n;
 
   return metalink_check_safe_path (basename) ? basename : NULL;
